@@ -66,8 +66,6 @@ export const login = async (req: Request, res: Response) => {
 
     const token = await generateTokenAndCookie(user._id, res);
 
-    console.log('token: ', token)
-
     res.status(201).json({
       token,
       email: user.email,
