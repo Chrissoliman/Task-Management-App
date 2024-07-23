@@ -64,10 +64,12 @@ export const login = async (req: Request, res: Response) => {
       return res.status(200).json({ error: "Invalid email or password." });
     }
 
-    generateTokenAndCookie(user._id, res);
+    const token = await generateTokenAndCookie(user._id, res);
+
+    console.log('token: ', token)
 
     res.status(201).json({
-      _id: user._id,
+      token,
       email: user.email,
     });
   } catch (error: any) {

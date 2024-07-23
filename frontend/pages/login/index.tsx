@@ -21,7 +21,7 @@ export default function Login() {
 
     async function submitHandler (e: FormEvent<HTMLFormElement>) {
         e.preventDefault()
-        const resultAction = await dispatch(login({username: formData.email, password: formData.password}))
+        const resultAction = await dispatch(login({email: formData.email, password: formData.password}))
         if(login.fulfilled.match(resultAction)) {
             router.push('/dashboard')
         }
@@ -76,6 +76,7 @@ export default function Login() {
                         <button
                             type="submit"
                             className="block w-full rounded-lg bg-blue-600 px-5 py-3 text-sm font-medium text-white"
+                            disabled={isLoading}
                         >
                             {isLoading ? 'Loading...' : 'Sign in'}
                         </button>

@@ -8,7 +8,6 @@ interface JwtPayload {
 }
 
 export const protectRoute = async (req: Request, res: Response, next: NextFunction) => {
-
     try {
         const token = req.cookies.jwt
 
@@ -16,9 +15,11 @@ export const protectRoute = async (req: Request, res: Response, next: NextFuncti
            return res.status(401).json({error: 'Unauthorized: No token provided'})
         }
 
-        const decoded = jwtpkg.verify(token, process.env.JWT_SECRET as string) as JwtPayload
-
-        if(!decoded) {
+        let decoded;
+        try {
+            decoded = jwtpkg.verify(token, process.env.JWT_SECRET as string) as JwtPayload
+        } catch (err: any) {
+            console.log("JWT verification error:", err.message);
             return res.status(401).json({error: 'Unauthorized: Invalid Token'})
         }
 

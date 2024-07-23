@@ -17,7 +17,7 @@ export default function Signup() {
 
     async function submitHandler(e: React.FormEvent) {
         e.preventDefault()
-        const resultAction = await dispatch(register({username: formData.email, password: formData.password}))
+        const resultAction = await dispatch(register({email: formData.email, password: formData.password}))
         if(register.fulfilled.match(resultAction)) {
             router.push('/login')
         }

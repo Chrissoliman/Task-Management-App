@@ -7,11 +7,13 @@ export default function Home() {
   const router = useRouter()
   const { user } = useSelector((state: RootState) => state.auth)
 
+  console.log('user: ', user?.token)
+
   useEffect(() => {
     if(!user) {
       router.push('/login')
     } else {
-      router.push('dashboard')
+      router.push('/dashboard')
     }
   }, [user, router])
 

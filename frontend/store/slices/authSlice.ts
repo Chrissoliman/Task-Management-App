@@ -2,6 +2,8 @@ import { User } from "@/types";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
+axios.defaults.withCredentials = true;
+
 interface AuthState {
   user: User | null;
   isLoading: boolean;
@@ -9,7 +11,7 @@ interface AuthState {
 }
 
 const initialState: AuthState = {
-  user: null,
+  user: typeof window !== 'undefined' ? JSON.parse(localStorage.getItem('user') || 'null') : null,
   isLoading: false,
   error: null,
 };
@@ -17,7 +19,7 @@ const initialState: AuthState = {
 export const login = createAsyncThunk(
   "auth/login",
   async (
-    credentials: { username: string; password: string },
+    credentials: { email: string; password: string },
     { rejectWithValue }
   ) => {
     try {
@@ -37,7 +39,7 @@ export const login = createAsyncThunk(
 export const register = createAsyncThunk(
   "auth/register",
   async (
-    userData: { username: string; password: string },
+    userData: { email: string; password: string },
     { rejectWithValue }
   ) => {
     try {
@@ -59,6 +61,7 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     logout: (state) => {
+      localStorage.removeItem('user');
       state.user = null;
     },
   },
@@ -71,6 +74,7 @@ const authSlice = createSlice({
       .addCase(login.fulfilled, (state, action) => {
         state.user = action.payload;
         state.isLoading = false;
+        localStorage.setItem('user', JSON.stringify(action.payload));
       })
       .addCase(login.rejected, (state, action) => {
         state.isLoading = false;
