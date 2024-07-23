@@ -33,8 +33,6 @@ const Task: React.FC<TaskProps> = ({ task }) => {
     setEdit(true)
   }
 
-  console.log('dueDate: ', task.dueDate)
-
   return (
     <>
     {edit && <CreateTask editMode={edit} setEditMode={setEdit} task={task} />}
